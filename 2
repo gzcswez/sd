@@ -1,0 +1,18 @@
+import numpy as np
+
+# 分别创建 C 顺序和 F 顺序的数组
+arr_c = np.random.rand(1000, 1000)  # 默认 order='C'，行优先
+arr_f = np.array(arr_c, order='F')  # 列优先
+
+# 验证内存布局属性
+print("arr_c 行连续(C):", arr_c.flags.c_contiguous)
+print("arr_f 列连续(F):", arr_f.flags.f_contiguous)
+
+# Jupyter 性能测试
+# 按行求和（axis=1）
+# %timeit arr_c.sum(axis=1)
+# %timeit arr_f.sum(axis=1)
+
+# 按列求和（axis=0）
+# %timeit arr_c.sum(axis=0)
+# %timeit arr_f.sum(axis=0)
