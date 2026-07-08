@@ -1,0 +1,25 @@
+import numpy as np
+
+# 生成大型随机矩阵
+np.random.seed(0)
+A = np.random.rand(1000, 2000)
+B = np.random.rand(2000, 3000)
+
+# Jupyter 环境下逐行运行计时
+# %timeit np.dot(A, B)
+# %timeit A @ B
+# %timeit np.matmul(A, B)
+
+# 纯Python环境计时参考
+import time
+def benchmark(func, *args, rounds=5):
+    times = []
+    for _ in range(rounds):
+        start = time.perf_counter()
+        func(*args)
+        times.append(time.perf_counter() - start)
+    return sum(times)/len(times)
+
+print("np.dot 平均耗时:", benchmark(np.dot, A, B))
+print("@ 运算符 平均耗时:", benchmark(lambda a,b: a@b, A, B))
+print("np.matmul 平均耗时:", benchmark(np.matmul, A, B))
