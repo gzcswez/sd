@@ -1,0 +1,20 @@
+import numpy as np
+
+S0 = 100        # 初始价格
+r = 0.03        # 年化无风险利率
+sigma = 0.2     # 年化波动率
+T = 1           # 模拟时长（年）
+trading_days = 252  # 年交易日数
+n_paths = 10000 # 模拟路径数
+
+dt = T / trading_days
+# 一次性生成所有路径、所有交易日的随机数
+Z = np.random.standard_normal((n_paths, trading_days))
+# 计算每日对数收益率
+daily_return = (r - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * Z
+# 累计收益率 + 指数化得到完整价格路径
+price_paths = S0 * np.exp(np.cumsum(daily_return, axis=1))
+
+# 结果：shape=(路径数, 交易日数)，每行对应一条价格路径
+print("价格路径 shape:", price_paths.shape)
+print("期末价格均值:", price_paths[:, -1].mean().round(2))
