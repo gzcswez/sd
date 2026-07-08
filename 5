@@ -1,0 +1,21 @@
+import numpy as np
+
+# 生成100个交易日的随机股价（模拟随机游走）
+np.random.seed(0)
+prices = 100 + np.cumsum(np.random.randn(100))
+
+# 方法1：np.convolve 滑动窗口（通用，支持自定义权重）
+def ma_convolve(prices, window):
+    return np.convolve(prices, np.ones(window)/window, mode='valid')
+
+# 方法2：np.cumsum 累计和法（仅等权窗口，大数据量下速度更快）
+def ma_cumsum(prices, window):
+    cumsum = np.cumsum(prices)
+    return (cumsum[window:] - cumsum[:-window]) / window
+
+# 计算5日、20日均线
+ma5 = ma_cumsum(prices, 5)
+ma20 = ma_cumsum(prices, 20)
+
+print("5日均线长度:", len(ma5), "前5个值:", ma5[:5].round(2))
+print("20日均线长度:", len(ma20), "前5个值:", ma20[:5].round(2))
