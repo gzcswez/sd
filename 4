@@ -1,0 +1,12 @@
+import numpy as np
+
+prices = np.array([100, 102, 105, 103, 107])
+
+# 方法1：后项除以前项，再取对数
+returns1 = np.log(prices[1:] / prices[:-1])
+
+# 方法2：先对价格取对数，再做差分（更简洁，计算更高效）
+returns2 = np.diff(np.log(prices))
+
+print("每日对数收益率:", returns1.round(6))
+print("两种方法结果一致:", np.allclose(returns1, returns2))
