@@ -1,0 +1,18 @@
+import numpy as np
+
+np.random.seed(0)
+A = np.random.rand(1000, 1000)
+
+# 普通写法：计算过程中生成 A²、2*A 两个临时数组
+result1 = A ** 2 + 2 * A + 1
+
+# 优化写法：预分配内存，用 out 参数避免临时变量
+result2 = np.empty_like(A)
+np.multiply(A, A, out=result2)       # A*A 直接写入 result2
+temp = np.empty_like(A)
+np.multiply(2, A, out=temp)          # 2*A 写入临时数组
+np.add(result2, temp, out=result2)   # 相加，结果回写 result2
+np.add(result2, 1, out=result2)      # 加1，最终结果存入 result2
+
+# 验证结果一致
+print("计算结果一致:", np.allclose(result1, result2))
