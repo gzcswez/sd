@@ -1,0 +1,17 @@
+import numpy as np
+
+np.random.seed(0)
+# 生成1000支股票、252个交易日的日收益率（模拟正态分布）
+returns = np.random.randn(1000, 252) * 0.02  # 日波动率约2%
+
+# 1. 计算每支股票的年化波动率
+# 年化波动率 = 日收益率标准差 × √交易日天数
+annual_vol = np.std(returns, axis=1) * np.sqrt(252)
+
+# 2. 计算股票间的相关系数矩阵
+# rowvar=True 表示每行是一个变量（一支股票），每列是观测值
+corr_matrix = np.corrcoef(returns)
+
+print("年化波动率 shape:", annual_vol.shape)
+print("市场平均年化波动率:", f"{annual_vol.mean():.2%}")
+print("相关系数矩阵 shape:", corr_matrix.shape)
